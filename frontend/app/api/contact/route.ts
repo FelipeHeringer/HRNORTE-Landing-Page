@@ -10,12 +10,14 @@ interface ErrorResponse {
 }
 
 export async function POST(request: NextRequest) {
+  const service = new EmailService();
+
   try {
     const body: ContactPayload = await request.json();
 
     ContactValidator.validate(body);
 
-    await EmailService.send(body);
+    await service.send(body);
 
     return NextResponse.json(
       {
