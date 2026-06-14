@@ -11,41 +11,27 @@ import { FormLabel } from "@/shared/components/FormLabel"
 import { FormTextArea, type FormTextAreaRef } from "@/shared/components/FormTextArea"
 import { useContactForm } from "../../viewmodels/useContactForm"
 import { AlertMessage, AlertMessageType } from "@/shared/components/AlertMessage"
+import { BUSINESS_HOURS, COMPANY_INFO, CONTACT_SUBJECTS } from "@/modules/contact/models/Contact"
+
+const CONTACT_ITEMS = [
+    { icon: <RoundedPhone />, title: "Telefone", description: COMPANY_INFO.phone },
+    { icon: <RoundedMail />, title: "E-mail", description: COMPANY_INFO.email },
+    { icon: <RoundedLocation />, title: "Endereço", description: COMPANY_INFO.address },
+] as const;
 
 export default function ContactInformationSection() {
     const screen = useScreenSize();
     const isMobile = screen === 'mobile';
 
-    const informations = [
-        { icon: <RoundedPhone />, title: "Telefone", description: "+55 (45) 99813-0054" },
-        { icon: <RoundedMail />, title: "E-mail", description: "contato@hrnorte.com.br" },
-        { icon: <RoundedLocation />, title: "Endereço", description: "Cancelli, Cascavel - PR" },
-    ]
-
-    const subjects = ['Novo Projeto', 'Visitar Empreendimento', 'Solicitar Orçamento', 'Dúvidas sobre Financiamento', 'Outros']
-
-    const fullNameRef = useRef<FormInputRef>(null);
-    const emailRef = useRef<FormInputRef>(null);
-    const subjectRef = useRef<FormDropDownRef>(null);
-    const messageRef = useRef<FormTextAreaRef>(null);
-
-    function clearFields() {
-        fullNameRef.current?.clear();
-        emailRef.current?.clear();
-        subjectRef.current?.clear();
-        messageRef.current?.clear();
-    }
-
-    const { status, submit, dismiss } = useContactForm(clearFields);
-
-    function handleSubmit() {
-        void submit({
-            fullName: fullNameRef.current?.getValue(),
-            email: emailRef.current?.getValue(),
-            subject: subjectRef.current?.getValue(),
-            message: messageRef.current?.getValue(),
-        });
-    }
+    const {
+        fullNameRef,
+        emailRef,
+        subjectRef,
+        messageRef,
+        status,
+        handleSubmit,
+        dismiss,
+    } = useContactForm();
 
     const alert =
         status.state === "success" || status.state === "error"
@@ -73,9 +59,9 @@ export default function ContactInformationSection() {
                     <div className="flex flex-col gap-20">
                         {/* Company Informations */}
                         <span className="flex flex-col gap-5">
-                            {informations.map((information, index) => (
+                            {CONTACT_ITEMS.map((item, index) => (
                                 <span key={index}>
-                                    <ContactInformation icon={information.icon} title={information.title} description={information.description} />
+                                    <ContactInformation icon={item.icon} title={item.title} description={item.description} />
                                 </span>
                             ))}
                         </span>
@@ -83,12 +69,12 @@ export default function ContactInformationSection() {
                             <p className="font-family-primary font-bold text-body">Horário de Atendimento</p>
                             <div className="flex justify-between">
                                 <p className="font-family-primary text-sm-custom text-[#474741]">Segunda - Sexta</p>
-                                <p className="font-family-primary text-sm-custom text-[#474741]">09:00 - 18:00</p>
+                                <p className="font-family-primary text-sm-custom text-[#474741]">{BUSINESS_HOURS.weekdays}</p>
                             </div>
                             <hr className="border-gray-200" />
                             <div className="flex justify-between">
                                 <p className="font-family-primary text-sm-custom text-[#474741]">Sábado / Domingo</p>
-                                <p className="font-family-primary text-sm-custom text-[#474741]">Fechado</p>
+                                <p className="font-family-primary text-sm-custom text-[#474741]">{BUSINESS_HOURS.saturday}</p>
                             </div>
                         </div>
                     </div>
@@ -128,7 +114,7 @@ export default function ContactInformationSection() {
                             </div>
                             <div className="flex flex-col gap-2">
                                 <FormLabel title={"ASSUNTO"} />
-                                <FormDropDown ref={subjectRef} icon={<Chevron />} values={subjects} />
+                                <FormDropDown ref={subjectRef} icon={<Chevron />} values={CONTACT_SUBJECTS} />
                             </div>
                             <div className="flex flex-col gap-2">
                                 <FormLabel title={"MENSAGEM"} />

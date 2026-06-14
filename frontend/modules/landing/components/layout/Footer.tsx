@@ -4,16 +4,17 @@ import { Logo, Mail, Location, Phone, RoundedShare, RoundedWorld } from "@/share
 import { useScreenSize } from "@/shared/hooks/useScreenSize";
 import { DirectContact } from "../DirectContact";
 import Link from "@/shared/components/Link";
+import { COMPANY_INFO } from "@/modules/contact/models/Contact";
+
+const CONTACT_ITEMS = [
+    { icon: <Phone />, description: COMPANY_INFO.phone },
+    { icon: <Mail />, description: COMPANY_INFO.email },
+    { icon: <Location colors={["#D4AF37"]} />, description: COMPANY_INFO.address }
+] as const;
 
 export default function Footer() {
     const screen = useScreenSize();
     const isMobile = screen === 'mobile';
-
-    const contacts = [
-        { icon: <Phone />, description: "+55 45 99813-0054" },
-        { icon: <Mail />, description: "contato@hrnorte.com.br" },
-        { icon: <Location colors={["#D4AF37"]} />, description: "Cascavel, Brasil" }
-    ]
 
     const currentYear = new Date().getFullYear();
 
@@ -59,9 +60,9 @@ export default function Footer() {
                     <div className="flex flex-col gap-3">
                         <h4 className="font-family-primary font-bold text-off-white text-[17px]">Contato Direto</h4>
                         <div className="flex flex-col gap-3">
-                            {contacts.map((contact, index) => (
+                            {CONTACT_ITEMS.map((item, index) => (
                                 <span key={index}>
-                                    <DirectContact icon={contact.icon} description={contact.description} />
+                                    <DirectContact icon={item.icon} description={item.description} />
                                 </span>
                             ))}
                         </div>
