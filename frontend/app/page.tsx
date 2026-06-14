@@ -1,8 +1,6 @@
+import './globals.css'
+import LandingPage from "@/modules/landing/pages/LandingPage";
 
-export default function Home() {
-  return (
-    <div>
-      
-    </div>
-  )
+export default function HomePage() {
+  return <LandingPage />;
 }
