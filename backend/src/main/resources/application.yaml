@@ -1,3 +1,20 @@
 spring:
   application:
     name: backend
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update 
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+api:
+  secret:
+    key: ${JWT_SECRET_KEY}
+jwt:
+  access-token-expiration: ${ACCESS_TOKEN_EXPIRATION}
+token:
+  refresh-token-expiration: ${REFRESH_TOKEN_EXPIRATION}
